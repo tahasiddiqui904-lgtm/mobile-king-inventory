@@ -57,11 +57,25 @@
 
 /* Highly accurate flyer printing system */
 @media print {
-  /* Hide the main app body, scrollbars, headers and footers */
+  /* Hide all elements on the screen by default */
   body * {
     visibility: hidden !important;
   }
   
+  /* Force all containing block parents to reset during print so position:fixed works relative to page */
+  html, body, #root, #root *, .fixed, .relative, .overflow-hidden {
+    overflow: visible !important;
+    position: static !important;
+    transform: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    height: auto !important;
+    width: auto !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
   /* Isolate our golden printable poster */
   #printable-flyer, #printable-flyer * {
     visibility: visible !important;
@@ -69,14 +83,15 @@
   
   /* Reset the flyer overlay to fit single page cleanly on standard letter/A4 */
   #printable-flyer {
-    position: fixed !important;
+    position: absolute !important;
     left: 50% !important;
     top: 50% !important;
     transform: translate(-50%, -50%) !important;
     width: 600px !important;
-    height: 850px !important;
+    height: 800px !important;
     z-index: 999999 !important;
     background-color: #0b0b0d !important;
+    background-image: linear-gradient(to bottom, #16161c, #0e0e11) !important;
     border: 3px solid #f59e0b !important;
     border-radius: 24px !important;
     padding: 40px !important;

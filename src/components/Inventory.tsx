@@ -538,7 +538,7 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
             <div id="printable-flyer" className="rounded-2xl border border-amber-500/20 p-6 bg-gradient-to-b from-[#16161c] to-[#0e0e11] text-center relative overflow-hidden flex-1 print-no-shadow">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-amber-500/5 via-transparent to-transparent pointer-events-none" />
               
-              <div className="text-[10px] text-amber-500 font-extrabold tracking-widest uppercase mb-2">CellDash Elite Products</div>
+              <div className="text-[10px] text-amber-500 font-extrabold tracking-widest uppercase mb-2">Mobile King Elite Products</div>
               <h2 className="text-3xl font-extrabold text-white leading-tight font-sans mb-3 text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-300">
                 {showPamphletModal.name}
               </h2>
@@ -563,7 +563,7 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
 
               <div className="bg-[#121215] border border-[#212126] p-3 rounded-xl mb-6">
                 <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Authorized Outlet Store</p>
-                <p className="text-white text-xs font-bold mt-0.5 uppercase tracking-wider">CellDash Accessories India</p>
+                <p className="text-white text-xs font-bold mt-0.5 uppercase tracking-wider">Mobile King Accessories India</p>
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-2">
