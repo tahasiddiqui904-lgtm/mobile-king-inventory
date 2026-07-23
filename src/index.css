@@ -57,6 +57,12 @@
 
 /* Highly accurate flyer printing system */
 @media print {
+  /* Define standard A4 size with zero default margins */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
   /* Hide main application frame components completely so they occupy 0 height/space */
   aside,
   header,
@@ -71,10 +77,13 @@
 
   /* Reset body and root backgrounds to print cleanly */
   html, body {
-    background: #000000 !important;
+    background: #0b0b0d !important;
     color: #ffffff !important;
-    height: auto !important;
+    height: 100% !important;
+    width: 100% !important;
     overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   /* Force all containing block parents to reset during print so positioning works relative to page */
@@ -86,17 +95,20 @@
     box-shadow: none !important;
   }
 
-  /* Style the flyer container to print cleanly on a single page */
+  /* Style the flyer container to occupy full A4 bleed space */
   #printable-flyer {
-    position: relative !important;
-    margin: 40px auto !important;
-    width: 600px !important;
-    height: 800px !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 30mm 20mm !important;
+    box-sizing: border-box !important;
     background-color: #0b0b0d !important;
     background-image: linear-gradient(to bottom, #16161c, #0e0e11) !important;
-    border: 3px solid #f59e0b !important;
-    border-radius: 24px !important;
-    padding: 40px !important;
+    border: none !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
     display: flex !important;
     flex-direction: column !important;
@@ -105,6 +117,54 @@
     color-scheme: dark !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+
+  /* Scale up layout elements to look like a real poster on A4 */
+  #printable-flyer h2 {
+    font-size: 3rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 24px !important;
+  }
+
+  #printable-flyer .text-amber-500 {
+    font-size: 14px !important;
+    margin-bottom: 12px !important;
+  }
+
+  #printable-flyer .text-slate-400.text-xs {
+    font-size: 16px !important;
+    margin-bottom: 30px !important;
+  }
+
+  /* Resize the circular price tag for A4 */
+  #printable-flyer .w-32.h-32 {
+    width: 180px !important;
+    height: 180px !important;
+    margin-bottom: 36px !important;
+  }
+
+  #printable-flyer .w-32.h-32 .text-2xl {
+    font-size: 32px !important;
+  }
+
+  #printable-flyer .w-32.h-32 span:first-child {
+    font-size: 14px !important;
+  }
+
+  #printable-flyer p.text-slate-400.text-xs {
+    font-size: 15px !important;
+    line-height: 1.8 !important;
+    max-width: 500px !important;
+    margin-bottom: 36px !important;
+  }
+
+  #printable-flyer .bg-\[\#121215\] {
+    padding: 20px !important;
+    width: 80% !important;
+  }
+
+  #printable-flyer .bg-\[\#121215\] p.text-white {
+    font-size: 18px !important;
   }
 
   /* Force clean visibility of brand details in black/amber gold gradient */

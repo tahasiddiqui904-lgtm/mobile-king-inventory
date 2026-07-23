@@ -26,6 +26,7 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
   // Edit Product State
   const [editName, setEditName] = useState("");
@@ -127,7 +128,7 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
       price: parseFloat(price) || 0,
       stock: parseInt(stock) || 0,
     };
-    setInventory([...inventory, newProduct]);
+    setInventory([newProduct, ...inventory]);
     setShowAddModal(false);
     resetForm();
   };
@@ -167,6 +168,7 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
     setCategory("Cases");
     setPrice("");
     setStock("");
+    setUploadedImage(null);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -176,6 +178,7 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
     const reader = new FileReader();
     reader.onload = async (event) => {
       const base64 = event.target?.result as string;
+      setUploadedImage(base64);
       await analyzeImage(base64);
     };
     reader.readAsDataURL(file);
@@ -356,6 +359,20 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
                   ref={fileInputRef}
                   onChange={handleImageUpload}
                 />
+                
+                {uploadedImage && (
+                  <div className="mb-4 relative">
+                    <img src={uploadedImage} alt="Thumbnail Preview" className="w-24 h-24 object-cover rounded-xl border border-amber-500/30" />
+                    <button
+                      type="button"
+                      onClick={() => setUploadedImage(null)}
+                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 border border-black shadow cursor-pointer"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
+
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
