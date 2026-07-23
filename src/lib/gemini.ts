@@ -51,7 +51,7 @@ export function removeCustomApiKey() {
 /**
  * Helper to execute fetch call to Google Generative Language API
  */
-async function callGeminiAPI(apiKey: string, payload: any, model = "gemini-2.5-flash") {
+async function callGeminiAPI(apiKey: string, payload: any, model = "gemini-1.5-flash") {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   const response = await fetch(url, {
     method: "POST",
@@ -180,16 +180,29 @@ export async function generateVisionAnalysis(imageBase64: string): Promise<Visio
     };
 
     const textResponse = await callGeminiAPI(apiKey, payload);
-    const sanitized = textResponse.replace(/```json/g, "").replace(/```/g, "").trim();
-    const parsed = JSON.parse(sanitized);
+    
+    // Robust extraction of JSON from markdown code blocks
+    let jsonString = textResponse.trim();
+    const jsonMatch = jsonString.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (jsonMatch) {
+      jsonString = jsonMatch[1].trim();
+    } else {
+      // Clean up inline markdown code fences if regex didn't match cleanly
+      jsonString = jsonString.replace(/```json/g, "").replace(/```/g, "").trim();
+    }
+    
+    const parsed = JSON.parse(jsonString);
     
     return {
       name: parsed.name || "Identified Accessory",
       category: parsed.category || "Other",
       suggestedPrice: Number(parsed.suggestedPrice) || 499,
     };
-  } catch (error) {
-    console.warn("Direct Gemini Vision API failed. seamless recovery: entering mock fallback.", error);
+  } catch (error: any) {
+    console.error("Direct Gemini Vision API failed:", error);
+    if (!isMockMode()) {
+      throw new Error(error.message || error);
+    }
     return getVisionFallback();
   }
 }

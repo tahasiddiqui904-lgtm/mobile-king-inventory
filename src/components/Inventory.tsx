@@ -192,9 +192,9 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
       if (data.category) setCategory(data.category);
       if (data.suggestedPrice) setPrice(data.suggestedPrice.toString());
       if (!stock) setStock("10"); // Default stock
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Failed to analyze image. Please try again.");
+      alert(`AI Vision Error: ${error.message || "Failed to analyze image. Please verify your API key and network connection."}`);
     } finally {
       setIsAnalyzing(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
