@@ -1,0 +1,8 @@
+{
+  "name": "Mobile Accessory Dashboard",
+  "description": "AI-powered retail management dashboard for a Mobile Accessory Shop.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

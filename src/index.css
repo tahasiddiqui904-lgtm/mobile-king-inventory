@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Moving ambient wallpaper background animation */
+@keyframes float-circle-1 {
+  0% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(80px, -120px) scale(1.2) rotate(180deg);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1) rotate(360deg);
+  }
+}
+
+@keyframes float-circle-2 {
+  0% {
+    transform: translate(0px, 0px) scale(1.1) rotate(0deg);
+  }
+  50% {
+    transform: translate(-100px, 80px) scale(0.85) rotate(-180deg);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1.1) rotate(360deg);
+  }
+}
+
+@keyframes float-circle-3 {
+  0% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(120px, 100px) scale(1.25) rotate(120deg);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1) rotate(360deg);
+  }
+}
+
+.animate-float-1 {
+  animation: float-circle-1 30s infinite ease-in-out;
+}
+
+.animate-float-2 {
+  animation: float-circle-2 35s infinite ease-in-out;
+}
+
+.animate-float-3 {
+  animation: float-circle-3 26s infinite ease-in-out;
+}
+
+/* Highly accurate flyer printing system */
+@media print {
+  /* Hide the main app body, scrollbars, headers and footers */
+  body * {
+    visibility: hidden !important;
+  }
+  
+  /* Isolate our golden printable poster */
+  #printable-flyer, #printable-flyer * {
+    visibility: visible !important;
+  }
+  
+  /* Reset the flyer overlay to fit single page cleanly on standard letter/A4 */
+  #printable-flyer {
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 600px !important;
+    height: 850px !important;
+    z-index: 999999 !important;
+    background-color: #0b0b0d !important;
+    border: 3px solid #f59e0b !important;
+    border-radius: 24px !important;
+    padding: 40px !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    color-scheme: dark !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Force clean visibility of brand details in black/amber gold gradient */
+  .print-no-shadow {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+/* Custom Animation Speed Physics Overrides */
+.physics-fast .animate-float-1 { animation-duration: 10s !important; }
+.physics-fast .animate-float-2 { animation-duration: 12s !important; }
+.physics-fast .animate-float-3 { animation-duration: 8s !important; }
+
+.physics-slow .animate-float-1 { animation-duration: 75s !important; }
+.physics-slow .animate-float-2 { animation-duration: 90s !important; }
+.physics-slow .animate-float-3 { animation-duration: 65s !important; }
+
+.physics-off .animate-float-1,
+.physics-off .animate-float-2,
+.physics-off .animate-float-3 {
+  animation: none !important;
+}
+
+
