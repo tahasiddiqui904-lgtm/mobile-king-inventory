@@ -57,39 +57,41 @@
 
 /* Highly accurate flyer printing system */
 @media print {
-  /* Hide all elements on the screen by default */
-  body * {
-    visibility: hidden !important;
+  /* Hide main application frame components completely so they occupy 0 height/space */
+  aside,
+  header,
+  .md\:hidden,
+  .pointer-events-none,
+  /* Hide main dashboard views, tables, and statistics */
+  .p-8.h-full.flex.flex-col > :not(.printable-modal-container),
+  /* Hide the close/print buttons inside the flyer modal itself on the printed page */
+  .printable-modal-container button {
+    display: none !important;
   }
-  
-  /* Force all containing block parents to reset during print so position:fixed works relative to page */
-  html, body, #root, #root *, .fixed, .relative, .overflow-hidden {
+
+  /* Reset body and root backgrounds to print cleanly */
+  html, body {
+    background: #000000 !important;
+    color: #ffffff !important;
+    height: auto !important;
     overflow: visible !important;
-    position: static !important;
+  }
+
+  /* Force all containing block parents to reset during print so positioning works relative to page */
+  #root, #root *, .fixed, .relative, .overflow-hidden {
+    overflow: visible !important;
     transform: none !important;
     filter: none !important;
     backdrop-filter: none !important;
-    height: auto !important;
-    width: auto !important;
-    background: transparent !important;
     box-shadow: none !important;
-    border: none !important;
   }
 
-  /* Isolate our golden printable poster */
-  #printable-flyer, #printable-flyer * {
-    visibility: visible !important;
-  }
-  
-  /* Reset the flyer overlay to fit single page cleanly on standard letter/A4 */
+  /* Style the flyer container to print cleanly on a single page */
   #printable-flyer {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    position: relative !important;
+    margin: 40px auto !important;
     width: 600px !important;
     height: 800px !important;
-    z-index: 999999 !important;
     background-color: #0b0b0d !important;
     background-image: linear-gradient(to bottom, #16161c, #0e0e11) !important;
     border: 3px solid #f59e0b !important;

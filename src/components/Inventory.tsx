@@ -526,7 +526,7 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
 
       {/* Pamphlet Flyer Modal - Redesigned as an gorgeous, golden-glowing, ultra-premium poster flyer */}
       {showPamphletModal && (
-        <div className="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div className="printable-modal-container fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
           <div className="relative bg-[#0b0b0d] rounded-3xl overflow-hidden w-full max-w-md shadow-[0_0_50px_rgba(245,158,11,0.2)] border border-amber-500/30 transform transition-all scale-100 p-6 flex flex-col">
             
             {/* Golden Ribbon Badge */}
