@@ -202,7 +202,7 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
   };
 
   return (
-    <div className="p-8 h-full flex flex-col bg-transparent selection:bg-amber-500/20 text-slate-200">
+    <div className="p-4 md:p-8 h-full flex flex-col bg-transparent selection:bg-amber-500/20 text-slate-200">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h2 className="text-2xl font-extrabold text-white tracking-tight uppercase">Inventory Catalog</h2>
@@ -334,8 +334,8 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
 
       {/* Add Product Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="bg-[#121215] border border-amber-500/10 rounded-2xl p-6 w-full max-w-md shadow-2xl relative overflow-hidden">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md overflow-y-auto z-50 p-4">
+          <div className="bg-[#121215] border border-amber-500/10 rounded-2xl p-6 w-full max-w-md shadow-2xl relative overflow-y-auto mx-auto my-4">
             <div className="flex justify-between items-center mb-6 relative z-10">
               <h3 className="text-lg font-bold text-white uppercase tracking-tight">Add New Catalog Item</h3>
               <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-white cursor-pointer p-1 rounded-lg hover:bg-white/5 transition-colors">
@@ -465,8 +465,8 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
 
       {/* Edit Product Modal */}
       {showEditModal && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="bg-[#121215] border border-amber-500/10 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md overflow-y-auto z-50 p-4">
+          <div className="bg-[#121215] border border-amber-500/10 rounded-2xl p-6 w-full max-w-md shadow-2xl relative mx-auto my-4">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold text-white uppercase tracking-tight">Edit Catalog Item</h3>
               <button onClick={() => setShowEditModal(null)} className="text-slate-400 hover:text-white cursor-pointer p-1 rounded-lg hover:bg-white/5 transition-colors">
@@ -543,8 +543,8 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
 
       {/* Pamphlet Flyer Modal - Redesigned as an gorgeous, golden-glowing, ultra-premium poster flyer */}
       {showPamphletModal && (
-        <div className="printable-modal-container fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="relative bg-[#0b0b0d] rounded-3xl overflow-hidden w-full max-w-md shadow-[0_0_50px_rgba(245,158,11,0.2)] border border-amber-500/30 transform transition-all scale-100 p-6 flex flex-col">
+        <div className="printable-modal-container fixed inset-0 bg-black/85 backdrop-blur-md overflow-y-auto z-50 p-4">
+          <div className="relative bg-[#0b0b0d] rounded-3xl overflow-hidden w-full max-w-md shadow-[0_0_50px_rgba(245,158,11,0.2)] border border-amber-500/30 transform transition-all scale-100 p-6 flex flex-col mx-auto my-4">
             
             {/* Golden Ribbon Badge */}
             <div className="absolute top-0 right-0 bg-amber-500 text-black font-black uppercase text-[9px] tracking-widest px-4 py-1.5 rounded-bl-xl font-sans">
@@ -604,8 +604,8 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
 
       {/* Custom Delete Confirmation Modal */}
       {productToDelete && (
-        <div className="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="relative bg-[#0b0b0d] rounded-2xl overflow-hidden w-full max-w-md shadow-[0_0_50px_rgba(239,68,68,0.15)] border border-red-500/20 p-6 flex flex-col">
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md overflow-y-auto z-50 p-4">
+          <div className="relative bg-[#0b0b0d] rounded-2xl overflow-hidden w-full max-w-md shadow-[0_0_50px_rgba(239,68,68,0.15)] border border-red-500/20 p-6 flex flex-col mx-auto my-4">
             <div className="text-center">
               <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20 text-red-500">
                 <Trash2 className="w-5 h-5" />
@@ -638,8 +638,8 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
 
       {/* Custom Database Reset Confirmation Modal */}
       {showResetModal && (
-        <div className="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="relative bg-[#0b0b0d] rounded-2xl overflow-hidden w-full max-w-md shadow-[0_0_50px_rgba(239,68,68,0.15)] border border-red-500/20 p-6 flex flex-col">
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md overflow-y-auto z-50 p-4">
+          <div className="relative bg-[#0b0b0d] rounded-2xl overflow-hidden w-full max-w-md shadow-[0_0_50px_rgba(239,68,68,0.15)] border border-red-500/20 p-6 flex flex-col mx-auto my-4">
             <div className="text-center">
               <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20 text-red-500">
                 <RotateCcw className="w-5 h-5" />
