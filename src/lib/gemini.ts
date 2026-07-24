@@ -15,7 +15,7 @@ export interface ChatMessage {
  * Retrieves the configured Gemini API key from localStorage or Vite environment.
  */
 export function getApiKey(): string {
-  const customKey = localStorage.getItem("mobileking_gemini_api_key");
+  const customKey = localStorage.getItem("mobileking_gemini_api_key") || localStorage.getItem("celldash_gemini_api_key");
   if (customKey && customKey.trim().length > 5) {
     return customKey.trim();
   }
@@ -88,7 +88,7 @@ export async function generateChatResponse(messages: ChatMessage[]): Promise<str
 
   try {
     const apiKey = getApiKey();
-    const systemInstruction = "You are an expert AI assistant for a mobile accessory shop owner in India. You help with inventory management, marketing ideas, and business insights. Be concise, professional, and helpful.";
+    const systemInstruction = "You are an expert AI assistant for Mobile King, a mobile accessory shop in India. You help with inventory management, marketing ideas, and business insights. Be concise, professional, and helpful.";
 
     // Format chat history for the standard generateContent schema
     const contents = messages.map((m) => ({
@@ -98,14 +98,17 @@ export async function generateChatResponse(messages: ChatMessage[]): Promise<str
 
     const payload = {
       contents,
-      systemInstruction: {
+      system_instruction: {
         parts: [{ text: systemInstruction }],
       },
     };
 
     return await callGeminiAPI(apiKey, payload);
-  } catch (error) {
-    console.warn("Direct Gemini Chat API failed. seamless recovery: entering fallback mode.", error);
+  } catch (error: any) {
+    console.error("Direct Gemini Chat API failed:", error);
+    if (!isMockMode()) {
+      return `[Gemini API Error] ${error.message || "Failed to query Gemini API. Please check your API key in Settings."}`;
+    }
     return `[Demo Fallback Active] ${getChatFallback(userMessage)}`;
   }
 }
@@ -159,6 +162,10 @@ export async function generateVisionAnalysis(imageBase64: string): Promise<Visio
 
   try {
     const apiKey = getApiKey();
+    
+    // Extract actual mime-type from base64 string
+    const mimeMatch = imageBase64.match(/^data:(image\/\w+);base64,/);
+    const mimeType = mimeMatch ? mimeMatch[1] : "image/jpeg";
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
 
     const payload = {
@@ -171,7 +178,7 @@ export async function generateVisionAnalysis(imageBase64: string): Promise<Visio
             {
               inlineData: {
                 data: base64Data,
-                mimeType: "image/jpeg",
+                mimeType: mimeType,
               },
             },
           ],
