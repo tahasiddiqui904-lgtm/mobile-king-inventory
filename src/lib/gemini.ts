@@ -66,6 +66,9 @@ async function callGeminiAPI(apiKey: string, payload: any, model = "gemini-1.5-f
     if (response.status === 404 && model !== "gemini-2.0-flash") {
       return callGeminiAPI(apiKey, payload, "gemini-2.0-flash");
     }
+    if (response.status === 429) {
+      throw new Error("Quota / Rate Limit Exceeded (429)");
+    }
     const errText = await response.text();
     throw new Error(`Gemini API returned status ${response.status}: ${errText}`);
   }
@@ -111,6 +114,10 @@ export async function generateChatResponse(messages: ChatMessage[]): Promise<str
   } catch (error: any) {
     console.error("Direct Gemini Chat API failed:", error);
     if (!isMockMode()) {
+      const isQuotaError = error.message?.includes("429") || error.message?.includes("Quota") || error.message?.includes("RESOURCE_EXHAUSTED");
+      if (isQuotaError) {
+        return `⚠️ **Gemini API Rate Limit / Quota Exceeded (429)**\n\nYour API key has temporarily reached its Google Free Tier limit (requests per minute/day).\n\n👉 **What to do:**\n1. Wait ~60 seconds for the quota to reset.\n2. Or toggle **Force Demo Fallback** in Settings to test without limits.\n\n---\n*Fallback reply for your query:*\n${getChatFallback(userMessage)}`;
+      }
       return `[Gemini API Error] ${error.message || "Failed to query Gemini API. Please check your API key in Settings."}`;
     }
     return `[Demo Fallback Active] ${getChatFallback(userMessage)}`;
@@ -212,6 +219,11 @@ export async function generateVisionAnalysis(imageBase64: string): Promise<Visio
   } catch (error: any) {
     console.error("Direct Gemini Vision API failed:", error);
     if (!isMockMode()) {
+      const isQuotaError = error.message?.includes("429") || error.message?.includes("Quota") || error.message?.includes("RESOURCE_EXHAUSTED");
+      if (isQuotaError) {
+        alert("⚠️ Gemini API Rate Limit Exceeded (429): Your free tier key quota is cooling down. Using smart auto-fill detection for this upload.");
+        return getVisionFallback();
+      }
       throw new Error(error.message || error);
     }
     return getVisionFallback();
