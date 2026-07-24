@@ -203,17 +203,18 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
 
   return (
     <div className="p-4 md:p-8 h-full flex flex-col bg-transparent selection:bg-amber-500/20 text-slate-200">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-2xl font-extrabold text-white tracking-tight uppercase">Inventory Catalog</h2>
-          <p className="text-slate-400 text-sm mt-1">Add, modify, track stock, and render golden promotional flyers.</p>
+      <div className="flex justify-between items-center mb-4 md:mb-8 gap-3">
+        <div className="min-w-0">
+          <h2 className="text-lg md:text-2xl font-extrabold text-white tracking-tight uppercase truncate">Inventory Catalog</h2>
+          <p className="text-slate-400 text-xs md:text-sm mt-0.5 hidden sm:block">Add, modify, track stock, and render golden promotional flyers.</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className={`px-5 py-2.5 rounded-xl font-bold flex items-center transition-all cursor-pointer ${currentTheme.buttonStyles} shadow-lg`}
+          className={`px-3 md:px-5 py-2 md:py-2.5 rounded-xl font-bold flex items-center flex-shrink-0 transition-all cursor-pointer ${currentTheme.buttonStyles} shadow-lg text-sm`}
         >
-          <Plus className="w-5 h-5 mr-2 stroke-[3]" />
-          Add Product
+          <Plus className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2 stroke-[3]" />
+          <span className="hidden sm:inline">Add Product</span>
+          <span className="sm:hidden">Add</span>
         </button>
       </div>
 
@@ -263,7 +264,45 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
           </div>
         </div>
 
-        <div className="overflow-auto flex-1">
+        {/* MOBILE CARD VIEW - shown only on small screens */}
+        <div className="md:hidden overflow-auto flex-1 p-3 space-y-3">
+          {filteredInventory.length === 0 ? (
+            <div className="text-center py-16 text-slate-500 text-sm">No catalog products found.</div>
+          ) : (
+            filteredInventory.map((item) => (
+              <div key={item.id} className="bg-[#16161a] border border-[#212126] rounded-xl p-4">
+                <div className="flex justify-between items-start gap-2 mb-2">
+                  <span className="text-sm font-semibold text-white leading-snug flex-1">{item.name}</span>
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-lg border flex-shrink-0 ${
+                    item.stock < 15
+                      ? "text-amber-500 bg-amber-500/5 border-amber-500/20"
+                      : "text-emerald-400 bg-emerald-400/5 border-emerald-400/20"
+                  }`}>{item.stock} units</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-[#18181d] px-2 py-0.5 rounded-lg border border-[#212126] text-[10px] font-medium text-slate-400">{item.category}</span>
+                    <span className="text-sm font-bold text-amber-400 font-mono">₹{item.price.toLocaleString('en-IN')}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <button onClick={() => handleEditClick(item)} className="p-1.5 text-slate-400 hover:text-amber-400 hover:bg-[#18181d] rounded-lg transition-all cursor-pointer">
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => setProductToDelete(item)} className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-[#18181d] rounded-lg transition-all cursor-pointer">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => setShowPamphletModal(item)} className="inline-flex items-center text-xs font-bold text-amber-500 bg-amber-500/5 px-2 py-1 rounded-lg border border-amber-500/10 transition-all cursor-pointer">
+                      <FileText className="w-3 h-3 mr-1" />Flyer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* DESKTOP TABLE VIEW - hidden on mobile */}
+        <div className="hidden md:block overflow-auto flex-1">
           <table className="w-full text-left">
             <thead className="bg-[#16161a] border-b border-[#212126] sticky top-0 z-10">
               <tr>
@@ -286,8 +325,8 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
                   <td className="px-6 py-4.5 text-sm font-bold text-amber-400 font-mono">₹{item.price.toLocaleString('en-IN')}</td>
                   <td className="px-6 py-4.5">
                     <span className={`text-xs font-bold px-2.5 py-1 rounded-lg border ${
-                      item.stock < 15 
-                        ? "text-amber-500 bg-amber-500/5 border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.02)]" 
+                      item.stock < 15
+                        ? "text-amber-500 bg-amber-500/5 border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.02)]"
                         : "text-emerald-400 bg-emerald-400/5 border-emerald-400/20"
                     }`}>
                       {item.stock} in stock
@@ -295,24 +334,13 @@ export function Inventory({ inventory, setInventory, filteredInventory, currentT
                   </td>
                   <td className="px-6 py-4.5 text-right">
                     <div className="flex items-center justify-end gap-2.5">
-                      <button
-                        onClick={() => handleEditClick(item)}
-                        title="Edit Item"
-                        className="p-2 text-slate-400 hover:text-amber-400 hover:bg-[#18181d] rounded-xl transition-all cursor-pointer border border-transparent hover:border-[#212126]"
-                      >
+                      <button onClick={() => handleEditClick(item)} title="Edit Item" className="p-2 text-slate-400 hover:text-amber-400 hover:bg-[#18181d] rounded-xl transition-all cursor-pointer border border-transparent hover:border-[#212126]">
                         <Edit2 className="w-4 h-4" />
                       </button>
-                      <button
-                        onClick={() => setProductToDelete(item)}
-                        title="Delete Item"
-                        className="p-2 text-slate-400 hover:text-red-400 hover:bg-[#18181d] rounded-xl transition-all cursor-pointer border border-transparent hover:border-[#212126]"
-                      >
+                      <button onClick={() => setProductToDelete(item)} title="Delete Item" className="p-2 text-slate-400 hover:text-red-400 hover:bg-[#18181d] rounded-xl transition-all cursor-pointer border border-transparent hover:border-[#212126]">
                         <Trash2 className="w-4 h-4" />
                       </button>
-                      <button
-                        onClick={() => setShowPamphletModal(item)}
-                        className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-amber-500 hover:text-amber-400 bg-amber-500/5 hover:bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/10 transition-all cursor-pointer"
-                      >
+                      <button onClick={() => setShowPamphletModal(item)} className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-amber-500 hover:text-amber-400 bg-amber-500/5 hover:bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/10 transition-all cursor-pointer">
                         <FileText className="w-3.5 h-3.5 mr-1.5" />
                         Flyer
                       </button>

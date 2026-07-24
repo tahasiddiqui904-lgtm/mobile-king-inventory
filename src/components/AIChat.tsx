@@ -71,9 +71,9 @@ export function AIChat({ currentTheme }: AIChatProps) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-transparent p-6 selection:bg-amber-500/20 text-slate-200">
+    <div className="flex flex-col h-full bg-transparent p-3 md:p-6 selection:bg-amber-500/20 text-slate-200">
       <div className="mb-6 flex-shrink-0">
-        <h2 className="text-2xl font-extrabold text-white tracking-tight uppercase flex items-center gap-2">
+        <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight uppercase flex items-center gap-2">
           <span>AI Intelligence Suite</span>
           <Sparkles className={`w-5 h-5 ${currentTheme.accentText}`} />
         </h2>
