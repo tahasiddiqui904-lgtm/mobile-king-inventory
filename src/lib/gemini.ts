@@ -51,20 +51,33 @@ export function removeCustomApiKey() {
 /**
  * Helper to execute fetch call to Google Generative Language API
  */
-async function callGeminiAPI(apiKey: string, payload: any, model = "gemini-2.5-flash") {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+// Ordered list of models to try (newer free-tier first)
+const GEMINI_MODEL_CHAIN = [
+  { model: "gemini-2.5-flash", apiVersion: "v1beta" },
+  { model: "gemini-2.5-flash", apiVersion: "v1" },
+  { model: "gemini-2.0-flash", apiVersion: "v1beta" },
+  { model: "gemini-1.5-flash-latest", apiVersion: "v1beta" },
+];
+
+async function callGeminiAPI(
+  apiKey: string,
+  payload: any,
+  modelIndex = 0
+): Promise<string> {
+  const { model, apiVersion } = GEMINI_MODEL_CHAIN[modelIndex] || GEMINI_MODEL_CHAIN[0];
+  const url = `https://generativelanguage.googleapis.com/${apiVersion}/models/${model}:generateContent?key=${apiKey}`;
+
   const response = await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
-    // Fallback chain: gemini-2.5-flash → gemini-2.5-flash-lite → error
-    if (response.status === 404 && model === "gemini-2.5-flash") {
-      return callGeminiAPI(apiKey, payload, "gemini-2.5-flash-lite");
+    // If model not found (404) or deprecated, try next in chain
+    if (response.status === 404 && modelIndex < GEMINI_MODEL_CHAIN.length - 1) {
+      console.warn(`Model ${model} (${apiVersion}) returned 404, trying next model...`);
+      return callGeminiAPI(apiKey, payload, modelIndex + 1);
     }
     if (response.status === 429) {
       throw new Error("Quota / Rate Limit Exceeded (429)");
