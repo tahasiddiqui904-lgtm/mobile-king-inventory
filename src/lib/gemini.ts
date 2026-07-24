@@ -51,7 +51,7 @@ export function removeCustomApiKey() {
 /**
  * Helper to execute fetch call to Google Generative Language API
  */
-async function callGeminiAPI(apiKey: string, payload: any, model = "gemini-1.5-flash") {
+async function callGeminiAPI(apiKey: string, payload: any, model = "gemini-1.5-flash-latest") {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   const response = await fetch(url, {
     method: "POST",
@@ -62,6 +62,10 @@ async function callGeminiAPI(apiKey: string, payload: any, model = "gemini-1.5-f
   });
 
   if (!response.ok) {
+    // If the primary model returns 404 on v1beta, seamlessly attempt gemini-2.0-flash
+    if (response.status === 404 && model !== "gemini-2.0-flash") {
+      return callGeminiAPI(apiKey, payload, "gemini-2.0-flash");
+    }
     const errText = await response.text();
     throw new Error(`Gemini API returned status ${response.status}: ${errText}`);
   }
