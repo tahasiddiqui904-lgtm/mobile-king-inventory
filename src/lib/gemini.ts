@@ -51,12 +51,13 @@ export function removeCustomApiKey() {
 /**
  * Helper to execute fetch call to Google Generative Language API
  */
-// Ordered list of models to try (newer free-tier first)
+// Ordered list of models to try (newest free-tier first, as of July 2026)
 const GEMINI_MODEL_CHAIN = [
-  { model: "gemini-2.5-flash", apiVersion: "v1beta" },
-  { model: "gemini-2.5-flash", apiVersion: "v1" },
-  { model: "gemini-2.0-flash", apiVersion: "v1beta" },
-  { model: "gemini-1.5-flash-latest", apiVersion: "v1beta" },
+  { model: "gemini-3.6-flash", apiVersion: "v1beta" },   // Latest (Jul 2026) - free tier
+  { model: "gemini-3.5-flash-lite", apiVersion: "v1beta" }, // Ultra-fast lite fallback
+  { model: "gemini-2.5-flash", apiVersion: "v1beta" },    // Older stable fallback
+  { model: "gemini-2.5-flash", apiVersion: "v1" },        // Retry with v1 endpoint
+  { model: "gemini-2.0-flash", apiVersion: "v1beta" },    // Further fallback
 ];
 
 async function callGeminiAPI(
